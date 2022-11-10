@@ -1,4 +1,5 @@
 ﻿using System;
+using Tabuleiros.Exceptions;
 
 namespace Tabuleiros
 {
@@ -20,10 +21,43 @@ namespace Tabuleiros
             return _pecas[linha, coluna];
         }
 
+        public Peca RetornaPeca(Posicao pos)
+        {
+            return _pecas[pos.Linha, pos.Coluna];
+        }
+
         public void ColocarPeca(Peca p, Posicao pos)
         {
+            if (ExistePeca(pos))
+            {
+                throw new TabuleiroException("Já existe uma peça nessa posição!");
+            }
             _pecas[pos.Linha, pos.Coluna] = p;
             p.Posicao = pos;
+        }
+
+        public bool ExistePeca(Posicao pos)
+        {
+            ValidarPosicao(pos);
+            return RetornaPeca(pos) != null;
+        }
+
+        public void ValidarPosicao(Posicao pos)
+        {
+            if (!PosicaoValida(pos))
+            {
+                throw new TabuleiroException("Posição inválida!");
+            }
+        }
+
+        public bool PosicaoValida(Posicao pos)
+        {
+            if(pos.Linha < 0 || pos.Linha >= Linhas || pos.Coluna < 0 || pos.Coluna >= Colunas)
+            {
+                return false;
+            }
+
+            return true;
         }
     }
 }

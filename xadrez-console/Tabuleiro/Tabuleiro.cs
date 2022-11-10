@@ -14,5 +14,10 @@ namespace tabuleiro
             Colunas = colunas;
             _pecas = new Peca[linhas, colunas];
         }
+
+        public Peca RetornaPeca(int linha, int coluna)
+        {
+            return _pecas[linha, coluna];
+        }
     }
 }

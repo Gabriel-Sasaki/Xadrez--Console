@@ -1,5 +1,5 @@
 ﻿using System;
-using tabuleiro;
+using Tabuleiros;
 
 namespace xadrez_console
 {

@@ -1,6 +1,6 @@
 ﻿using System;
 
-namespace tabuleiro
+namespace Tabuleiros
 {
     internal class Peca
     {
@@ -9,9 +9,8 @@ namespace tabuleiro
         public int QtdMovimentos { get; protected set; }
         public Tabuleiro Tabuleiro { get; protected set; }
 
-        public Peca(Posicao posicao, Cor cor, Tabuleiro tabuleiro)
+        public Peca(Cor cor, Tabuleiro tabuleiro)
         {
-            Posicao = posicao;
             Cor = cor;
             Tabuleiro = tabuleiro;
             QtdMovimentos = 0;

@@ -1,11 +1,52 @@
 ﻿using System;
 using Tabuleiros;
 using Xadrez;
+using System.Collections.Generic;
 
 namespace xadrez_console
 {
     internal class Tela
     {
+        public static void ImprimePartida(PartidaXadrez partida)
+        {
+            ImprimeTabuleiro(partida.Tabuleiro);
+
+            Console.WriteLine();
+            ImprimePecasCapturas(partida);
+
+            Console.WriteLine($"\nTurno: {partida.Turno}" +
+                $"\nAguardando jogada: {partida.JogadorAtual}");
+        }
+
+        private static void ImprimePecasCapturas(PartidaXadrez partida)
+        {
+            Console.WriteLine("Peças capturadas:");
+
+            Console.Write("Brancas: ");
+            ImprimeConjunto(partida.PecasCapturadas(Cor.Branca));
+            
+            Console.Write("\nPretas: ");
+
+            ConsoleColor aux = Console.ForegroundColor;
+            Console.ForegroundColor = ConsoleColor.Yellow;
+            ImprimeConjunto(partida.PecasCapturadas(Cor.Preta));
+            Console.ForegroundColor= aux;
+
+            Console.WriteLine();
+        }
+
+        public static void ImprimeConjunto(HashSet<Peca> pecas)
+        {
+            Console.Write("[ ");
+
+            foreach(var peca in pecas)
+            {
+                Console.Write(peca + " ");
+            }
+
+            Console.Write("]");
+        }
+
         // Imprime a matriz na tela. Onde tem peça coloca a letra representativa do método ToString()
         // Onde não tem peça coloca um hífen -
         public static void ImprimeTabuleiro(Tabuleiro tabuleiro)
@@ -27,6 +68,8 @@ namespace xadrez_console
             Console.WriteLine("  a b c d e f g h");
         }
 
+        // Faz o mesmo que o método de menor parâmetro, porém mostra as posições das jogadas
+        // possíveis em cinza
         public static void ImprimeTabuleiro(Tabuleiro tabuleiro, bool[,] posicoesPossiveis)
         {
             ConsoleColor fundoOriginal = Console.BackgroundColor;

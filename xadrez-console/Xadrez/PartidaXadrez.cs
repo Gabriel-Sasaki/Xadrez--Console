@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Collections.Generic;
 using Tabuleiros;
 using Tabuleiros.Exceptions;
 
@@ -10,6 +11,8 @@ namespace Xadrez
         public int Turno { get; private set; }
         public Cor JogadorAtual { get; private set; }
         public bool Terminada { get; private set; }
+        private HashSet<Peca> _pecas;
+        private HashSet<Peca> _pecasCapturadas;
 
         public PartidaXadrez()
         {
@@ -18,25 +21,33 @@ namespace Xadrez
             Turno = 1;
             JogadorAtual = Cor.Branca;
             Terminada = false;
+            _pecas = new HashSet<Peca>();
+            _pecasCapturadas= new HashSet<Peca>();
             ColocaPecas();
+        }
+
+        public void ColocaNovaPeca(char coluna, int linha, Peca peca)
+        {
+            Tabuleiro.ColocaPeca(peca, new PosicaoXadrez(coluna, linha).ConvertePosicao());
+            _pecas.Add(peca);
         }
 
         // Coloca as peças nas posições iniciais
         private void ColocaPecas()
         {
-            Tabuleiro.ColocaPeca(new Torre(Cor.Branca, Tabuleiro), new PosicaoXadrez('c', 1).ConvertePosicao());
-            Tabuleiro.ColocaPeca(new Torre(Cor.Branca, Tabuleiro), new PosicaoXadrez('c', 2).ConvertePosicao());
-            Tabuleiro.ColocaPeca(new Torre(Cor.Branca, Tabuleiro), new PosicaoXadrez('d', 2).ConvertePosicao());
-            Tabuleiro.ColocaPeca(new Torre(Cor.Branca, Tabuleiro), new PosicaoXadrez('e', 2).ConvertePosicao());
-            Tabuleiro.ColocaPeca(new Torre(Cor.Branca, Tabuleiro), new PosicaoXadrez('e', 1).ConvertePosicao());
-            Tabuleiro.ColocaPeca(new Rei(Cor.Branca, Tabuleiro), new PosicaoXadrez('d', 1).ConvertePosicao());
+            ColocaNovaPeca('c', 1, new Torre(Cor.Branca, Tabuleiro));
+            ColocaNovaPeca('c', 2, new Torre(Cor.Branca, Tabuleiro));
+            ColocaNovaPeca('d', 2, new Torre(Cor.Branca, Tabuleiro));
+            ColocaNovaPeca('e', 2, new Torre(Cor.Branca, Tabuleiro));
+            ColocaNovaPeca('e', 1, new Torre(Cor.Branca, Tabuleiro));
+            ColocaNovaPeca('d', 1, new Rei(Cor.Branca, Tabuleiro));
 
-            Tabuleiro.ColocaPeca(new Torre(Cor.Preta, Tabuleiro), new PosicaoXadrez('c', 8).ConvertePosicao());
-            Tabuleiro.ColocaPeca(new Torre(Cor.Preta, Tabuleiro), new PosicaoXadrez('c', 7).ConvertePosicao());
-            Tabuleiro.ColocaPeca(new Torre(Cor.Preta, Tabuleiro), new PosicaoXadrez('d', 7).ConvertePosicao());
-            Tabuleiro.ColocaPeca(new Torre(Cor.Preta, Tabuleiro), new PosicaoXadrez('e', 7).ConvertePosicao());
-            Tabuleiro.ColocaPeca(new Torre(Cor.Preta, Tabuleiro), new PosicaoXadrez('e', 8).ConvertePosicao());
-            Tabuleiro.ColocaPeca(new Rei(Cor.Preta, Tabuleiro), new PosicaoXadrez('d', 8).ConvertePosicao());
+            ColocaNovaPeca('c', 8, new Torre(Cor.Preta, Tabuleiro));
+            ColocaNovaPeca('c', 7, new Torre(Cor.Preta, Tabuleiro));
+            ColocaNovaPeca('d', 7, new Torre(Cor.Preta, Tabuleiro));
+            ColocaNovaPeca('e', 7, new Torre(Cor.Preta, Tabuleiro));
+            ColocaNovaPeca('e', 8, new Torre(Cor.Preta, Tabuleiro));
+            ColocaNovaPeca('d', 8, new Rei(Cor.Preta, Tabuleiro));
         }
 
         // Retira a peça da posição de origem, incrementa a quantidade de movimentos
@@ -47,6 +58,11 @@ namespace Xadrez
             peca.IncrementaQtdMovimentos();
             Peca pecaCapturada = Tabuleiro.RetiraPeca(destino);
             Tabuleiro.ColocaPeca(peca, destino);
+
+            if(pecaCapturada != null)
+            {
+                _pecasCapturadas.Add(pecaCapturada);
+            }
         }
 
         // Realiza a execução da jogada mudando a posição, mudando o turno e o jogador atual
@@ -100,6 +116,41 @@ namespace Xadrez
             {
                 throw new TabuleiroException("Posição de destino inválida!");
             }
+        }
+
+        // Retorna todas as peças em jogo de uma determinada cor
+        public HashSet<Peca> PecasEmJogo(Cor cor)
+        {
+            HashSet<Peca> pecasAux = new HashSet<Peca>();
+
+            foreach (var peca in _pecas)
+            {
+                if (peca.Cor == cor)
+                {
+                    pecasAux.Add(peca);
+                }
+            }
+
+            // Remove todas as peças que já foram capturas, ou seja, que não estão em jogo
+            pecasAux.ExceptWith(PecasCapturadas(cor));
+
+            return pecasAux;
+        }
+
+        // Retorna todas as peças capturadas de uma determinada cor
+        public HashSet<Peca> PecasCapturadas(Cor cor)
+        {
+            HashSet<Peca> pecasAux = new HashSet<Peca>();
+
+            foreach(var pecaCapturada in _pecasCapturadas)
+            {
+                if(pecaCapturada.Cor == cor)
+                {
+                    pecasAux.Add(pecaCapturada);
+                }
+            }
+            
+            return pecasAux;
         }
     }
 }

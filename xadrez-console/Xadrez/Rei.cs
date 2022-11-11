@@ -47,6 +47,12 @@ namespace Xadrez
                 movPossiveis[pos.Linha, pos.Coluna] = true;
             }
 
+            pos.DefineValores(Posicao.Linha + 1, Posicao.Coluna - 1);
+            if (Tabuleiro.IsPosicaoValida(pos) && IsLocalValido(pos))
+            {
+                movPossiveis[pos.Linha, pos.Coluna] = true;
+            }
+
             pos.DefineValores(Posicao.Linha, Posicao.Coluna - 1);
             if (Tabuleiro.IsPosicaoValida(pos) && IsLocalValido(pos))
             {

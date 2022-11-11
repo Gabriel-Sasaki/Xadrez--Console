@@ -30,7 +30,7 @@ namespace Tabuleiros
         }
 
         // Coloca uma peça escolhida na posição escolhida
-        public void ColocarPeca(Peca p, Posicao pos)
+        public void ColocaPeca(Peca p, Posicao pos)
         {
             if (ExistePeca(pos))
             {
@@ -41,7 +41,7 @@ namespace Tabuleiros
         }
 
         // Retira a peca do tabuleiro (se ela estiver na posição definida) e retorna ela
-        public Peca RetirarPeca(Posicao pos)
+        public Peca RetiraPeca(Posicao pos)
         {
             Peca pecaRetornada = RetornaPeca(pos);
 
@@ -58,21 +58,21 @@ namespace Tabuleiros
         // Valida se já existe uma peça na posição informada
         public bool ExistePeca(Posicao pos)
         {
-            ValidarPosicao(pos);
+            ValidaPosicao(pos);
             return RetornaPeca(pos) != null;
         }
 
         // Lança uma exceção se o método PosicaoValida() resultar em false
-        public void ValidarPosicao(Posicao pos)
+        public void ValidaPosicao(Posicao pos)
         {
-            if (!PosicaoValida(pos))
+            if (!IsPosicaoValida(pos))
             {
                 throw new TabuleiroException("Posição inválida!");
             }
         }
 
         // Verifica se a posição definida está fora da matriz (tabuleiro)
-        public bool PosicaoValida(Posicao pos)
+        public bool IsPosicaoValida(Posicao pos)
         {
             if(pos.Linha < 0 || pos.Linha >= Linhas || pos.Coluna < 0 || pos.Coluna >= Colunas)
             {

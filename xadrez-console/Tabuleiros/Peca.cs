@@ -23,6 +23,31 @@ namespace Tabuleiros
             QtdMovimentos++;
         }
 
+        // Verifica se existe pelo menos um movimento possível
+        // Se sim, retorna true, se não, retorna false
+        public bool ExisteMovimentosPossiveis()
+        {
+            bool[,] movPossiveis = MovimentosPossiveis();
+
+            for(int x = 0; x < Tabuleiro.Linhas; x++)
+            {
+                for(int y = 0; y < Tabuleiro.Colunas; y++)
+                {
+                    if (movPossiveis[x, y])
+                    {
+                        return true;
+                    }
+                }
+            }
+
+            return false;
+        }
+
+        public bool PodeMoverPara(Posicao pos)
+        {
+            return MovimentosPossiveis()[pos.Linha, pos.Coluna];
+        }
+
         public abstract bool[,] MovimentosPossiveis();
     }
 }

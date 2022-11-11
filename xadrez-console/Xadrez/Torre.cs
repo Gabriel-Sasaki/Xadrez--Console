@@ -10,6 +10,7 @@ namespace Xadrez
 
         }
 
+        // Verifica os movimentos possíveis para a Torre
         public override bool[,] MovimentosPossiveis()
         {
             bool[,] movPossiveis = new bool[Tabuleiro.Linhas, Tabuleiro.Colunas];

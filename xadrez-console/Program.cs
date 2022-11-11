@@ -14,22 +14,35 @@ namespace xadrez_console
 
                 while (!partida.Terminada)
                 {
-                    Console.Clear();
+                    try
+                    {
+                        Console.Clear();
 
-                    Tela.ImprimeTabuleiro(partida.Tabuleiro);
+                        Tela.ImprimeTabuleiro(partida.Tabuleiro);
+                        Console.WriteLine($"\nTurno: {partida.Turno}" +
+                            $"\nAguardando jogada: {partida.JogadorAtual}");
 
-                    Console.Write("\nOrigem: ");
-                    Posicao origem = Tela.LerPosicaoXadrez().ConvertePosicao();
+                        Console.Write("\nOrigem: ");
+                        Posicao origem = Tela.LerPosicaoXadrez().ConvertePosicao();
+                        partida.ValidaPosicaoOrigem(origem);
 
-                    bool[,] posicoesPossiveis = partida.Tabuleiro.RetornaPeca(origem).MovimentosPossiveis();
+                        bool[,] posicoesPossiveis = partida.Tabuleiro.RetornaPeca(origem).MovimentosPossiveis();
 
-                    Console.Clear();
-                    Tela.ImprimeTabuleiro(partida.Tabuleiro, posicoesPossiveis);
+                        Console.Clear();
+                        Tela.ImprimeTabuleiro(partida.Tabuleiro, posicoesPossiveis);
 
-                    Console.Write("\nDestino: ");
-                    Posicao destino = Tela.LerPosicaoXadrez().ConvertePosicao();
+                        Console.Write("\nDestino: ");
+                        Posicao destino = Tela.LerPosicaoXadrez().ConvertePosicao();
+                        partida.ValidaPosicaoDestino(origem, destino);
 
-                    partida.ExecutaMovimento(origem, destino);
+                        partida.RealizaJogada(origem, destino);
+                    }
+                    catch(TabuleiroException e)
+                    {
+                        Console.WriteLine("Erro: " + e.Message);
+                        Console.WriteLine("Clique ENTER para repetir a jogada!");
+                        Console.ReadLine();
+                    }
                 }
 
                 Tela.ImprimeTabuleiro(partida.Tabuleiro);

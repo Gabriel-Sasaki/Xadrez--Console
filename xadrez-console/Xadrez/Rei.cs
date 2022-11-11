@@ -10,6 +10,7 @@ namespace Xadrez
 
         }
 
+        // Verifica os movimentos possíveis para o Rei
         public override bool[,] MovimentosPossiveis()
         {
             bool[,] movPossiveis = new bool[Tabuleiro.Linhas, Tabuleiro.Colunas];

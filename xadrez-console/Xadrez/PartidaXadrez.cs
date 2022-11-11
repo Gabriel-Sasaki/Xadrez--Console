@@ -13,6 +13,7 @@ namespace Xadrez
         public bool Terminada { get; private set; }
         private HashSet<Peca> _pecas;
         private HashSet<Peca> _pecasCapturadas;
+        public bool Xeque { get; private set; }
 
         public PartidaXadrez()
         {
@@ -21,11 +22,13 @@ namespace Xadrez
             Turno = 1;
             JogadorAtual = Cor.Branca;
             Terminada = false;
+            Xeque = false;
             _pecas = new HashSet<Peca>();
             _pecasCapturadas= new HashSet<Peca>();
             ColocaPecas();
         }
 
+        // Coloca uma peça em uma determinada posição
         public void ColocaNovaPeca(char coluna, int linha, Peca peca)
         {
             Tabuleiro.ColocaPeca(peca, new PosicaoXadrez(coluna, linha).ConvertePosicao());
@@ -52,7 +55,7 @@ namespace Xadrez
 
         // Retira a peça da posição de origem, incrementa a quantidade de movimentos
         // Retira a peça da posição de destino e coloca a peça que se moveu no lugar
-        public void ExecutaMovimento(Posicao origem, Posicao destino)
+        public Peca ExecutaMovimento(Posicao origem, Posicao destino)
         {
             Peca peca = Tabuleiro.RetiraPeca(origem);
             peca.IncrementaQtdMovimentos();
@@ -63,14 +66,47 @@ namespace Xadrez
             {
                 _pecasCapturadas.Add(pecaCapturada);
             }
+
+            return pecaCapturada;
         }
 
         // Realiza a execução da jogada mudando a posição, mudando o turno e o jogador atual
         public void RealizaJogada(Posicao origem, Posicao destino)
         {
-            ExecutaMovimento(origem, destino);
+            Peca pecaCapturada = ExecutaMovimento(origem, destino);
+
+            if (IsEmXeque(JogadorAtual))
+            {
+                DesfazMovimento(origem, destino, pecaCapturada);
+                throw new TabuleiroException("Você não pode colocar seu rei em xeque!");
+            }
+
+            if (IsEmXeque(CorAdversaria(JogadorAtual)))
+            {
+                Xeque = true;
+            }
+            else
+            {
+                Xeque = false;
+            }
+
             Turno++;
             MudaJogadorAtual();
+        }
+
+        // Desfaz o último movimento realizado
+        private void DesfazMovimento(Posicao origem, Posicao destino, Peca pecaCapturada)
+        {
+            Peca peca = Tabuleiro.RetiraPeca(destino);
+            peca.DecrementarQtdMovimentos();
+
+            if(pecaCapturada != null)
+            {
+                Tabuleiro.ColocaPeca(pecaCapturada, destino);
+                _pecasCapturadas.Remove(pecaCapturada);
+            }
+
+            Tabuleiro.ColocaPeca(peca, origem);
         }
 
         // Muda o jogador atual de branca para preta e vice-versa
@@ -151,6 +187,56 @@ namespace Xadrez
             }
             
             return pecasAux;
+        }
+
+        // Retorna a cor adversária
+        private Cor CorAdversaria(Cor cor)
+        {
+            if(cor == Cor.Branca)
+            {
+                return Cor.Preta;
+            }
+            else
+            {
+                return Cor.Branca;
+            }
+        }
+
+        // Retorna o rei de uma dada cor
+        private Peca RetornaRei(Cor cor)
+        {
+            foreach(var peca in PecasEmJogo(cor))
+            {
+                if(peca is Rei)
+                {
+                    return peca;
+                }
+            }
+
+            return null;
+        }
+
+        // Verifica se um rei está em xeque
+        public bool IsEmXeque(Cor cor)
+        {
+            Peca rei = RetornaRei(cor);
+
+            if(rei == null)
+            {
+                throw new TabuleiroException("Não há o rei dessa cor no tabuleiro!");
+            }
+
+            foreach (var peca in PecasEmJogo(CorAdversaria(cor)))
+            {
+                bool[,] movimentosPossiveis = peca.MovimentosPossiveis();
+
+                if (movimentosPossiveis[rei.Posicao.Linha, rei.Posicao.Coluna])
+                {
+                    return true;
+                }
+            }
+
+            return false;
         }
     }
 }

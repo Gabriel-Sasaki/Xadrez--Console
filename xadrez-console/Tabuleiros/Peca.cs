@@ -23,6 +23,11 @@ namespace Tabuleiros
             QtdMovimentos++;
         }
 
+        internal void DecrementarQtdMovimentos()
+        {
+            QtdMovimentos--;
+        }
+
         // Verifica se existe pelo menos um movimento possível
         // Se sim, retorna true, se não, retorna false
         public bool ExisteMovimentosPossiveis()

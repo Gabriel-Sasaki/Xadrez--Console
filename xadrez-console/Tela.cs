@@ -7,6 +7,8 @@ namespace xadrez_console
 {
     internal class Tela
     {
+
+        // Imprime os dados da partida na tela
         public static void ImprimePartida(PartidaXadrez partida)
         {
             ImprimeTabuleiro(partida.Tabuleiro);
@@ -16,8 +18,14 @@ namespace xadrez_console
 
             Console.WriteLine($"\nTurno: {partida.Turno}" +
                 $"\nAguardando jogada: {partida.JogadorAtual}");
-        }
 
+            if (partida.Xeque)
+            {
+                Console.WriteLine("VOCÊ ESTÁ EM XEQUE!");
+            }
+        }
+        
+        // Imprime as peças capturadas
         private static void ImprimePecasCapturas(PartidaXadrez partida)
         {
             Console.WriteLine("Peças capturadas:");
@@ -35,6 +43,7 @@ namespace xadrez_console
             Console.WriteLine();
         }
 
+        // Imprime o conjunto de peças informado
         public static void ImprimeConjunto(HashSet<Peca> pecas)
         {
             Console.Write("[ ");

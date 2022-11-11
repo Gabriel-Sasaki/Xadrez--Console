@@ -5,6 +5,8 @@ namespace xadrez_console
 {
     internal class Tela
     {
+        // Imprime a matriz na tela. Onde tem peça coloca a letra representativa do método ToString()
+        // Onde não tem peça coloca um hífen -
         public static void ImprimirTabuleiro(Tabuleiro tabuleiro)
         {
             for(int x = 0; x < tabuleiro.Linhas; x++)

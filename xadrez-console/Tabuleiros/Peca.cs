@@ -2,6 +2,7 @@
 
 namespace Tabuleiros
 {
+    // Classe representativa da peça no tabuleiro
     internal class Peca
     {
         public Posicao Posicao { get; set; }

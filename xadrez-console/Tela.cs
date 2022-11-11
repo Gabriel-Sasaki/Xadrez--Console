@@ -1,5 +1,6 @@
 ﻿using System;
 using Tabuleiros;
+using Xadrez;
 
 namespace xadrez_console
 {
@@ -35,6 +36,7 @@ namespace xadrez_console
             Console.WriteLine("  a b c d e f g h");
         }
 
+        // Imprime a peça na posição definida com a cor definida
         public static void ImprimirPeca(Peca peca)
         {
             if(peca.Cor == Cor.Branca)
@@ -48,6 +50,14 @@ namespace xadrez_console
                 Console.Write(peca);
                 Console.ForegroundColor = aux;
             }
+        }
+
+        public static PosicaoXadrez LerPosicaoXadrez()
+        {
+            string str = Console.ReadLine();
+            char linha = str[0];
+            int coluna = int.Parse($"{str[1]}");
+            return new PosicaoXadrez(linha, coluna);
         }
     }
 }

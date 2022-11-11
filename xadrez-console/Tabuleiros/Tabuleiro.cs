@@ -40,6 +40,21 @@ namespace Tabuleiros
             p.Posicao = pos;
         }
 
+        // Retira a peca do tabuleiro (se ela estiver na posição definida) e retorna ela
+        public Peca RetirarPeca(Posicao pos)
+        {
+            Peca pecaRetornada = RetornaPeca(pos);
+
+            if (pecaRetornada == null)
+            {
+                return null;
+            }
+
+            pecaRetornada.Posicao = null;
+            _pecas[pos.Linha, pos.Coluna] = null;
+            return pecaRetornada;
+        }
+
         // Valida se já existe uma peça na posição informada
         public bool ExistePeca(Posicao pos)
         {

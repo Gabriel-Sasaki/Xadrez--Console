@@ -155,7 +155,7 @@ namespace Xadrez
         {
             Peca pecaOrigem = Tabuleiro.RetornaPeca(origem);
 
-            if (!pecaOrigem.PodeMoverPara(destino))
+            if (!pecaOrigem.IsMovimentoPossivel(destino))
             {
                 throw new TabuleiroException("Posição de destino inválida!");
             }

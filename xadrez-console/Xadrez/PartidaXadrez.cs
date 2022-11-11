@@ -90,8 +90,15 @@ namespace Xadrez
                 Xeque = false;
             }
 
-            Turno++;
-            MudaJogadorAtual();
+            if (IsEmXequeMate(CorAdversaria(JogadorAtual)))
+            {
+                Terminada = true;
+            }
+            else
+            {
+                Turno++;
+                MudaJogadorAtual();
+            }
         }
 
         // Desfaz o último movimento realizado
@@ -237,6 +244,52 @@ namespace Xadrez
             }
 
             return false;
+        }
+
+        // Verifica se um rei está em xeque mate
+        public bool IsEmXequeMate(Cor cor)
+        {
+            if (!IsEmXeque(cor))
+            {
+                return false;
+            }
+
+            foreach(var peca in PecasEmJogo(cor))
+            {
+                bool[,] movPossiveis = peca.MovimentosPossiveis();
+
+                for(int x = 0; x < Tabuleiro.Linhas; x++)
+                {
+                    for(int y = 0; y < Tabuleiro.Colunas; y++)
+                    {
+                        // Se o movimento na linha x, coluna y for possível
+                        if (movPossiveis[x, y])
+                        {
+                            Posicao destino = new Posicao(x, y);
+                            Posicao origem = peca.Posicao;
+
+                            // Executa o movimento possível
+                            Peca pecaCapturada = ExecutaMovimento(origem, destino);
+
+                            // Testa se o movimento possível resultou em um xeque
+                            bool testeXeque = IsEmXeque(cor);
+
+                            // Desfaz o movimento possível testado
+                            DesfazMovimento(origem, destino, pecaCapturada);
+
+                            // Se o movimento possível conseguiu tirar do xeque então
+                            // a peça não está em xeque mate, retornando false
+                            if (!testeXeque)
+                            {
+                                return false;
+                            }
+                        }
+                    }
+                }
+            }
+
+            // Se nenhum movimento possível de todas as peças tirar do xeque, então é xeque mate
+            return true;
         }
     }
 }

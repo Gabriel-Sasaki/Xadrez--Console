@@ -33,6 +33,11 @@ namespace xadrez_console
                 Console.WriteLine("XEQUEMATE!");
                 Console.WriteLine("Vencedor: " + partida.JogadorAtual);
             }
+
+            if(partida.Turno == 1)
+            {
+                Console.WriteLine("\nInforme a posição no padrão letra-número (exemplo: a1)");
+            }
         }
         
         // Imprime as peças capturadas

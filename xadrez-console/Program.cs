@@ -41,6 +41,26 @@ namespace xadrez_console
                         Console.WriteLine("Clique ENTER para repetir a jogada!");
                         Console.ReadLine();
                     }
+                    catch(FormatException)
+                    {
+                        Console.WriteLine("Erro: O formato da posição está incorreto. " +
+                            "Utilize o padrão letra-número (exemplo: a1).");
+                        Console.WriteLine("Clique ENTER para repetir a jogada!");
+                        Console.ReadLine();
+                    }
+                    catch (IndexOutOfRangeException)
+                    {
+                        Console.WriteLine("Erro: Posição fora do tabuleiro. Digite uma posição " +
+                            "válida!");
+                        Console.WriteLine("Clique ENTER para repetir a jogada!");
+                        Console.ReadLine();
+                    }
+                    catch(Exception e)
+                    {
+                        Console.WriteLine("Erro inesperado: " + e.Message);
+                        Console.WriteLine("Clique ENTER para repetir a jogada!");
+                        Console.ReadLine();
+                    }
                 }
 
                 Console.Clear();

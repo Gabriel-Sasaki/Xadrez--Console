@@ -38,19 +38,43 @@ namespace Xadrez
         // Coloca as peças nas posições iniciais
         private void ColocaPecas()
         {
-            ColocaNovaPeca('c', 1, new Torre(Cor.Branca, Tabuleiro));
-            ColocaNovaPeca('c', 2, new Torre(Cor.Branca, Tabuleiro));
-            ColocaNovaPeca('d', 2, new Torre(Cor.Branca, Tabuleiro));
-            ColocaNovaPeca('e', 2, new Torre(Cor.Branca, Tabuleiro));
-            ColocaNovaPeca('e', 1, new Torre(Cor.Branca, Tabuleiro));
-            ColocaNovaPeca('d', 1, new Rei(Cor.Branca, Tabuleiro));
+            // Peças brancas
+            ColocaNovaPeca('a', 1, new Torre(Cor.Branca, Tabuleiro));
+            ColocaNovaPeca('b', 1, new Cavalo(Cor.Branca, Tabuleiro));
+            ColocaNovaPeca('c', 1, new Bispo(Cor.Branca, Tabuleiro));
+            ColocaNovaPeca('d', 1, new Dama(Cor.Branca, Tabuleiro));
+            ColocaNovaPeca('e', 1, new Rei(Cor.Branca, Tabuleiro));
+            ColocaNovaPeca('f', 1, new Bispo(Cor.Branca, Tabuleiro));
+            ColocaNovaPeca('g', 1, new Cavalo(Cor.Branca, Tabuleiro));
+            ColocaNovaPeca('h', 1, new Torre(Cor.Branca, Tabuleiro));
 
-            ColocaNovaPeca('c', 8, new Torre(Cor.Preta, Tabuleiro));
-            ColocaNovaPeca('c', 7, new Torre(Cor.Preta, Tabuleiro));
-            ColocaNovaPeca('d', 7, new Torre(Cor.Preta, Tabuleiro));
-            ColocaNovaPeca('e', 7, new Torre(Cor.Preta, Tabuleiro));
-            ColocaNovaPeca('e', 8, new Torre(Cor.Preta, Tabuleiro));
+            ColocaNovaPeca('a', 2, new Peao(Cor.Branca, Tabuleiro));
+            ColocaNovaPeca('b', 2, new Peao(Cor.Branca, Tabuleiro));
+            ColocaNovaPeca('c', 2, new Peao(Cor.Branca, Tabuleiro));
+            ColocaNovaPeca('d', 2, new Peao(Cor.Branca, Tabuleiro));
+            ColocaNovaPeca('e', 2, new Peao(Cor.Branca, Tabuleiro));
+            ColocaNovaPeca('f', 2, new Peao(Cor.Branca, Tabuleiro));
+            ColocaNovaPeca('g', 2, new Peao(Cor.Branca, Tabuleiro));
+            ColocaNovaPeca('h', 2, new Peao(Cor.Branca, Tabuleiro));
+
+            // Peças pretas
+            ColocaNovaPeca('a', 8, new Torre(Cor.Preta, Tabuleiro));
+            ColocaNovaPeca('b', 8, new Cavalo(Cor.Preta, Tabuleiro));
+            ColocaNovaPeca('c', 8, new Bispo(Cor.Preta, Tabuleiro));
             ColocaNovaPeca('d', 8, new Rei(Cor.Preta, Tabuleiro));
+            ColocaNovaPeca('e', 8, new Dama(Cor.Preta, Tabuleiro));
+            ColocaNovaPeca('f', 8, new Bispo(Cor.Preta, Tabuleiro));
+            ColocaNovaPeca('g', 8, new Cavalo(Cor.Preta, Tabuleiro));
+            ColocaNovaPeca('h', 8, new Torre(Cor.Preta, Tabuleiro));
+
+            ColocaNovaPeca('a', 7, new Peao(Cor.Preta, Tabuleiro));
+            ColocaNovaPeca('b', 7, new Peao(Cor.Preta, Tabuleiro));
+            ColocaNovaPeca('c', 7, new Peao(Cor.Preta, Tabuleiro));
+            ColocaNovaPeca('d', 7, new Peao(Cor.Preta, Tabuleiro));
+            ColocaNovaPeca('e', 7, new Peao(Cor.Preta, Tabuleiro));
+            ColocaNovaPeca('f', 7, new Peao(Cor.Preta, Tabuleiro));
+            ColocaNovaPeca('g', 7, new Peao(Cor.Preta, Tabuleiro));
+            ColocaNovaPeca('h', 7, new Peao(Cor.Preta, Tabuleiro));
         }
 
         // Retira a peça da posição de origem, incrementa a quantidade de movimentos

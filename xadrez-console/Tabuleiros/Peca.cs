@@ -23,7 +23,7 @@ namespace Tabuleiros
             QtdMovimentos++;
         }
 
-        internal void DecrementarQtdMovimentos()
+        internal void DecrementaQtdMovimentos()
         {
             QtdMovimentos--;
         }

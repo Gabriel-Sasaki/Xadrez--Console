@@ -202,6 +202,21 @@ namespace Xadrez
                 throw new TabuleiroException("Você não pode colocar seu rei em xeque!");
             }
 
+            Peca peca = Tabuleiro.RetornaPeca(destino);
+
+            // #jogadaespecial Promoção
+            if(peca is Peao)
+            {
+                if((peca.Cor == Cor.Branca && destino.Linha == 0) || (peca.Cor == Cor.Preta && destino.Linha == 7))
+                {
+                    peca = Tabuleiro.RetiraPeca(destino);
+                    _pecas.Remove(peca);
+                    Peca dama = new Dama(peca.Cor, Tabuleiro);
+                    Tabuleiro.ColocaPeca(dama, destino);
+                    _pecas.Add(dama);
+                }
+            }
+
             if (IsEmXeque(CorAdversaria(JogadorAtual)))
             {
                 Xeque = true;
@@ -222,11 +237,9 @@ namespace Xadrez
             }
 
             // #jogadaespecial : En Passant
-            Peca p = Tabuleiro.RetornaPeca(destino);
-
-            if(p is Peao && (destino.Linha == origem.Linha - 2 || destino.Linha == origem.Linha + 2))
+            if(peca is Peao && (destino.Linha == origem.Linha - 2 || destino.Linha == origem.Linha + 2))
             {
-                VulneravelEnPassant = p;
+                VulneravelEnPassant = peca;
             }
             else
             {

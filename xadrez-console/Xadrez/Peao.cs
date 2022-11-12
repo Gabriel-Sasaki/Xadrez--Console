@@ -5,9 +5,11 @@ namespace Xadrez
 {
     internal class Peao : Peca
     {
-        public Peao(Cor cor, Tabuleiro tabuleiro) : base(cor, tabuleiro)
-        {
+        private PartidaXadrez _partida;
 
+        public Peao(Cor cor, Tabuleiro tabuleiro, PartidaXadrez partida) : base(cor, tabuleiro)
+        {
+            _partida = partida;
         }
 
         public override bool[,] MovimentosPossiveis()
@@ -31,15 +33,35 @@ namespace Xadrez
                 }
 
                 pos.DefineValores(Posicao.Linha - 1, Posicao.Coluna - 1);
-                if (Tabuleiro.IsPosicaoValida(pos) && IsInimigoDiagonal(pos))
+                if (Tabuleiro.IsPosicaoValida(pos) && IsExisteInimigo(pos))
                 {
                     movPossiveis[pos.Linha, pos.Coluna] = true;
                 }
 
                 pos.DefineValores(Posicao.Linha - 1, Posicao.Coluna + 1);
-                if (Tabuleiro.IsPosicaoValida(pos) && IsInimigoDiagonal(pos))
+                if (Tabuleiro.IsPosicaoValida(pos) && IsExisteInimigo(pos))
                 {
                     movPossiveis[pos.Linha, pos.Coluna] = true;
+                }
+
+                // #jogadaespecial : En Passant
+                if (Posicao.Linha == 3)
+                {
+                    Posicao esquerda = new Posicao(Posicao.Linha, Posicao.Coluna - 1);
+
+                    if(Tabuleiro.IsPosicaoValida(esquerda) && IsExisteInimigo(esquerda)
+                        && Tabuleiro.RetornaPeca(esquerda) == _partida.VulneravelEnPassant)
+                    {
+                        movPossiveis[esquerda.Linha - 1, esquerda.Coluna] = true;
+                    }
+
+                    Posicao direita = new Posicao(Posicao.Linha, Posicao.Coluna + 1);
+
+                    if (Tabuleiro.IsPosicaoValida(direita) && IsExisteInimigo(direita)
+                        && Tabuleiro.RetornaPeca(direita) == _partida.VulneravelEnPassant)
+                    {
+                        movPossiveis[direita.Linha - 1, direita.Coluna] = true;
+                    }
                 }
             }
             else
@@ -57,22 +79,42 @@ namespace Xadrez
                 }
 
                 pos.DefineValores(Posicao.Linha + 1, Posicao.Coluna + 1);
-                if (Tabuleiro.IsPosicaoValida(pos) && IsInimigoDiagonal(pos))
+                if (Tabuleiro.IsPosicaoValida(pos) && IsExisteInimigo(pos))
                 {
                     movPossiveis[pos.Linha, pos.Coluna] = true;
                 }
 
                 pos.DefineValores(Posicao.Linha + 1, Posicao.Coluna - 1);
-                if (Tabuleiro.IsPosicaoValida(pos) && IsInimigoDiagonal(pos))
+                if (Tabuleiro.IsPosicaoValida(pos) && IsExisteInimigo(pos))
                 {
                     movPossiveis[pos.Linha, pos.Coluna] = true;
+                }
+
+                // #jogadaespecial : En Passant
+                if (Posicao.Linha == 4)
+                {
+                    Posicao esquerda = new Posicao(Posicao.Linha, Posicao.Coluna - 1);
+
+                    if (Tabuleiro.IsPosicaoValida(esquerda) && IsExisteInimigo(esquerda)
+                        && Tabuleiro.RetornaPeca(esquerda) == _partida.VulneravelEnPassant)
+                    {
+                        movPossiveis[esquerda.Linha + 1, esquerda.Coluna] = true;
+                    }
+
+                    Posicao direita = new Posicao(Posicao.Linha, Posicao.Coluna + 1);
+
+                    if (Tabuleiro.IsPosicaoValida(direita) && IsExisteInimigo(direita)
+                        && Tabuleiro.RetornaPeca(direita) == _partida.VulneravelEnPassant)
+                    {
+                        movPossiveis[direita.Linha + 1, direita.Coluna] = true;
+                    }
                 }
             }
 
             return movPossiveis;
         }
 
-        private bool IsInimigoDiagonal(Posicao pos)
+        private bool IsExisteInimigo(Posicao pos)
         {
             Peca peca = Tabuleiro.RetornaPeca(pos);
             return peca != null && peca.Cor != Cor;
